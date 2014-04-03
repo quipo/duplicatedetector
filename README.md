@@ -1,5 +1,8 @@
 # Duplicate Detector (Golang)
 
+[![Build Status](https://travis-ci.org/quipo/duplicatedetector.png?branch=master)](https://travis-ci.org/quipo/duplicatedetector) 
+[![GoDoc](https://godoc.org/github.com/quipo/duplicatedetector?status.png)](http://godoc.org/github.com/quipo/duplicatedetector)
+
 ## Introduction
 
 Memcached-based duplicate detector. 
