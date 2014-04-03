@@ -2,18 +2,20 @@
 
 ## Introduction
 
-Memcached-based duplicate detector. Given a message id/hash, it can check whether it was previously seen by the system.
+Memcached-based duplicate detector. 
 
+Given a message id/hash, it can check whether it was previously seen by the system.
 
 
 ## Installation
 
-    go get github.com/bradfix/gomemcache/memcache
-    go get github.com/quipo/duplicatedetector
+```sh
+# load dependency
+$ go get github.com/bradfix/gomemcache/memcache
 
-
-## Configuration
-
+# install package
+$ go get github.com/quipo/duplicatedetector
+```
 
 ## Sample usage
 
@@ -21,18 +23,25 @@ Memcached-based duplicate detector. Given a message id/hash, it can check whethe
 package main
 
 import (
+	"fmt"
+
+	"github.com/bradfitz/gomemcache/memcache"
 	"github.com/quipo/duplicatedetector"
 )
 
 func main() {
 
-	mc := memcache.New("10.0.0.1:11211", "10.0.0.2:11211", "10.0.0.3:11212")
+	mc := memcache.New("10.0.0.1:11211", "10.0.0.2:11211")
 
 	prefix := "myapp."
 	dupedetector := duplicatedetector.NewChecker(mc, prefix, 3600) // cache for 1 hour
 
-	for i:=0; i<3; i++ {
-		if dupedetector.IsDuplicate("abc") {
+	for i := 0; i < 3; i++ {
+		dupe, err := dupedetector.IsDuplicate("abc")
+		if nil != err {
+			fmt.Println("**** ERROR from memcache: ", err)
+		}
+		if dupe {
 			fmt.Println("Entry is a duplicate: skipping")
 			continue
 		}

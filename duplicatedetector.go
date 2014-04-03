@@ -2,6 +2,7 @@ package duplicatedetector
 
 import (
 	"bytes"
+	"fmt"
 
 	"github.com/bradfitz/gomemcache/memcache"
 )
@@ -38,15 +39,18 @@ func (c *checker) Set(id string) error {
 }
 
 // Has will check if the item has been previously seen already
-func (c *checker) Has(id string) bool {
-	v, err := c.cache.Get(c.getKeyFor(id))
+// The function could return an error in case Memcache is not reachable or
+// the retrieved value is not what was stored by the duplicate detector
+func (c *checker) Has(id string) (bool, error) {
+	k := c.getKeyFor(id)
+	v, err := c.cache.Get(k)
 	if err != nil {
-		return false
+		return false, err
 	}
 	if bytes.Equal(v.Value, c.value) {
-		return true
+		return true, nil
 	}
-	return false
+	return false, fmt.Errorf("key '%s' in cache, but unrecognised value %v", k, v.Value)
 }
 
 // Delete will remove the item from the cache, allowing a new Item with the same key in
@@ -61,9 +65,11 @@ func (c *checker) Delete(id string) error {
 // IsDuplicate checks if the ID has been seen before (true) or if it's the first time (false).
 // This counts as a touch: the first time an ID is checked, it is added to the cache;
 // the second time the same ID is checked, it is considered as a duplicate
-func (c *checker) IsDuplicate(id string) bool {
-	if nil != c.cache.Add(c.getItemFor(id)) {
-		return true
+// The function could return an error in case Memcache is not reachable
+func (c *checker) IsDuplicate(id string) (bool, error) {
+	err := c.cache.Add(c.getItemFor(id))
+	if memcache.ErrNotStored == err {
+		return true, nil
 	}
-	return false
+	return false, err
 }

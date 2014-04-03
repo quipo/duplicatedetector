@@ -13,25 +13,25 @@ const testServer = "localhost:11211"
 func TestDeduper(t *testing.T) {
 	c := initChecker()
 	// adding first entry
-	ok := c.IsDuplicate("abc")
+	ok, _ := c.IsDuplicate("abc")
 	if ok {
 		t.Error("Cannot add entry #1 to cache. It was supposed to be the first time.")
 	}
 
 	// adding second entry
-	ok = c.IsDuplicate("xyz")
+	ok, _ = c.IsDuplicate("xyz")
 	if ok {
 		t.Error("Cannot add entry #2 to cache. It was supposed to be the first time.")
 	}
 
 	// add same entry again, expected error
-	ok = c.IsDuplicate("abc")
+	ok, _ = c.IsDuplicate("abc")
 	if !ok {
 		t.Error("The checker failed to detect the duplicate entry #1")
 	}
 
 	// add same entry again, expected error
-	ok = c.IsDuplicate("xyz")
+	ok, _ = c.IsDuplicate("xyz")
 	if !ok {
 		t.Error("The checker failed to detect the duplicate entry #2")
 	}
