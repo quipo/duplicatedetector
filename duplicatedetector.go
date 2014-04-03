@@ -20,7 +20,7 @@ type Checker struct {
 // and a TTL (in seconds, either a relative time from now, up to 1 month, or an absolute
 // Unix epoch time. Zero means the items have no expiration time)
 func NewChecker(mc *memcache.Client, prefix string, ttl int32) *Checker {
-	return &checker{cache: mc, prefix: prefix, expiration: ttl, value: []byte("x")}
+	return &Checker{cache: mc, prefix: prefix, expiration: ttl, value: []byte("x")}
 }
 
 // getKeyFor prepends the prefix to the item key

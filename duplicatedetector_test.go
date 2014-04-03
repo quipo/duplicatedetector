@@ -37,7 +37,7 @@ func TestDeduper(t *testing.T) {
 	}
 }
 
-func initChecker() *checker {
+func initChecker() *Checker {
 	mc := memcache.New("localhost:11211")
 
 	rand.Seed(int64(time.Now().Nanosecond()))
