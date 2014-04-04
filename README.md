@@ -14,7 +14,7 @@ Given a message id/hash, it can check whether it was previously seen by the syst
 
 ```sh
 # load dependency
-$ go get github.com/bradfix/gomemcache/memcache
+$ go get github.com/bradfitz/gomemcache/memcache
 
 # install package
 $ go get github.com/quipo/duplicatedetector
