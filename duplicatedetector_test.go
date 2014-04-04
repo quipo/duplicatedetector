@@ -38,7 +38,7 @@ func TestDeduper(t *testing.T) {
 }
 
 func initChecker() *Checker {
-	mc := memcache.New("localhost:11211")
+	mc := memcache.New(testServer)
 
 	rand.Seed(int64(time.Now().Nanosecond()))
 	s := randStrings(5)
@@ -49,7 +49,7 @@ func initChecker() *Checker {
 
 func randStrings(N int) []string {
 	Maxlen := 10
-	chars := "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 abcdefghijklmnopqrstuvwxyz"
+	chars := "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"
 
 	r := make([]string, N)
 	ri := 0
