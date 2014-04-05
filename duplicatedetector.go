@@ -25,7 +25,7 @@ func NewChecker(mc *memcache.Client, prefix string, ttl int32) *Checker {
 
 // getKeyFor prepends the prefix to the item key
 func (c *Checker) getKeyFor(id string) string {
-	return c.prefix + "_" + id
+	return c.prefix + id
 }
 
 // getItemFor returns an Item object ready to be stored in memcache
